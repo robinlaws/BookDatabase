@@ -37,15 +37,21 @@ public class LibraryData extends HttpServlet {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewLibrary.jsp");
         request.setAttribute("bookList", dbConnection.getAllBooks());
         request.setAttribute("authorList", dbConnection.getAllAuthors());
-        //TODO add the list to the request
         requestDispatcher.forward(request, response);
-        //TODO add the list to the request
-        requestDispatcher.forward(request, response);
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
+        try {
+            dbConnection.prepareConnection();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        String title = req.getParameter("title");
+        String firstName = req.getParameter("firstname");
+        String lastName = req.getParameter("lastname");
         String author = req.getParameter("author");
         String book = req.getParameter("book");
         String isbn = req.getParameter("isbn");
@@ -53,11 +59,9 @@ public class LibraryData extends HttpServlet {
         String copyright = req.getParameter("copyright");
         try {
             dbConnection.addNewBook(isbn, copyright, book, edition);
+            dbConnection.addNewAuthor(firstName, lastName, title);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        doGet(req, resp);
-        
-        //TODO Here I want to handle the New Author and New Book form posts
     }
 }

@@ -41,10 +41,11 @@ public class DBConnection {
      * @throws SQLException sql exception
      */
     public void loadBooks() throws SQLException {
+        this.statement = this.connection.createStatement();
         allBooks.clear();
         ResultSet rs = this.statement.executeQuery("SELECT * FROM " + TITLES_TABLE);
         while (rs.next()) {
-            Book book = new Book(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4));
+            Book book = new Book(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4));
             allBooks.add(book);
         }
     }
@@ -55,6 +56,7 @@ public class DBConnection {
      * @throws SQLException sql exception
      */
     public void loadAuthors() throws SQLException {
+        this.statement = this.connection.createStatement();
         allAuthors.clear();
         ResultSet rs = statement.executeQuery("SELECT * FROM " + AUTHOR_TABLE);
         while (rs.next()) {
@@ -68,6 +70,7 @@ public class DBConnection {
      * @throws SQLException sql exception
      */
     public void loadDatabase() throws SQLException {
+        this.statement = this.connection.createStatement();
         map.clear();
 
         String query = "SELECT " + TITLES_TABLE + "." + TITLES_TITLE + "," +
@@ -112,7 +115,7 @@ public class DBConnection {
      * Method add new book allows the user to enter information to add book to database.
      */
     public void addNewBook(String ISBN, String copyright, String title, int editionNumber) throws Exception{
-
+        this.statement = this.connection.createStatement();
         String query = "INSERT into " + TITLES_TABLE + " VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, ISBN);
@@ -124,6 +127,20 @@ public class DBConnection {
         loadDatabase();
         System.out.println("Book added to database.");
 
+    }
+    /**
+     * Method add new author allows user to enter author information and add to database
+     */
+    public void addNewAuthor(String firstName, String lastName, String title) throws Exception{
+        this.statement = this.connection.createStatement();
+        String query = "INSERT into " + AUTHOR_TABLE +  " VALUES (DEFAULT, ?, ?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, firstName);
+        preparedStatement.setString(2, lastName);
+        preparedStatement.execute();
+        loadAuthors();
+        loadDatabase();
+        System.out.println("Author added to database.");
     }
 
     public HashMap<String, String> getMap() {

@@ -13,7 +13,7 @@ public class Book {
     private final String title;
     private final String ISBN;
     private final int editionNumber;
-    private final int copyright;
+    private final String copyright;
 
     private List<Author> authorList = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class Book {
      * @param editionNumber book edition number
      * @param copyright book copyright year
      */
-    public Book(String ISBN, String title,  int editionNumber, int copyright){
+    public Book(String ISBN, String title,  int editionNumber, String copyright){
         this.title = title;
         this.ISBN = ISBN;
         this.editionNumber = editionNumber;
@@ -75,7 +75,7 @@ public class Book {
      * method get copyright returns book copyright year
      * @return copyright
      */
-    public int getCopyright() {
+    public String getCopyright() {
         return copyright;
     }
 }
