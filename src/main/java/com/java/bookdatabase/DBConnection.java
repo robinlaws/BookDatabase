@@ -19,35 +19,35 @@ public class DBConnection {
     public final static String AUTHOR_ID = "authorID";
     public final static String AUTHOR_ISBN_TABLE = "authorISBN";
     public final static String ISBN = "ISBN";
-    private Connection connection;
-    private Statement statement;
+
 
     /**
      * Method prepare connection connects to database using pre-initialized values
      * in book database manager (driver, URL, user, password)
      * @return connection
      */
-    public void prepareConnection() throws Exception{
+    public Connection prepareConnection() throws Exception{
         Class.forName(JDBC_DRIVER);
-        System.out.println("Connecting to a selected database...");
-        this.connection = DriverManager.getConnection(
+        Connection connection = DriverManager.getConnection(
                 DB_URL, USER, PASS);
-        System.out.println("Connected database successfully...");
-        this.statement = this.connection.createStatement();
+        System.out.println("Connected to database.");
+        return connection;
     }
 
     /**
      * Method load books loads all books from database and creates book objects
      * @throws SQLException sql exception
      */
-    public void loadBooks() throws SQLException {
-        this.statement = this.connection.createStatement();
+    public void loadBooks() throws Exception {
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
         allBooks.clear();
-        ResultSet rs = this.statement.executeQuery("SELECT * FROM " + TITLES_TABLE);
+        ResultSet rs = statement.executeQuery("SELECT * FROM " + TITLES_TABLE);
         while (rs.next()) {
             Book book = new Book(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4));
             allBooks.add(book);
         }
+        statement.close();
     }
     /**
      * Method load authors loads all authors from database and creates author objects
@@ -55,24 +55,26 @@ public class DBConnection {
      * @return
      * @throws SQLException sql exception
      */
-    public void loadAuthors() throws SQLException {
-        this.statement = this.connection.createStatement();
+    public void loadAuthors() throws Exception {
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
         allAuthors.clear();
         ResultSet rs = statement.executeQuery("SELECT * FROM " + AUTHOR_TABLE);
         while (rs.next()) {
             Author author = new Author(rs.getInt(1), rs.getString(2), rs.getString(3));
             allAuthors.add(author);
         }
+        statement.close();
     }
     /**
      * Method load database queries database tables using primary key relationships.
      * Books and authors are added to hash map with key: Book value: Authors
      * @throws SQLException sql exception
      */
-    public void loadDatabase() throws SQLException {
-        this.statement = this.connection.createStatement();
+    public void loadDatabase() throws Exception {
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
         map.clear();
-
         String query = "SELECT " + TITLES_TABLE + "." + TITLES_TITLE + "," +
                 AUTHOR_TABLE + "." + AUTHOR_ID +
                 " FROM " + TITLES_TABLE +
@@ -87,7 +89,7 @@ public class DBConnection {
         //                  JOIN authorsISBN ON titles.isbn = authorsISBN.isbn
         //                  JOIN authors ON authors.authorID = authorISBN.authorID;
 
-        ResultSet rs = this.statement.executeQuery(query);
+        ResultSet rs = statement.executeQuery(query);
         while (rs.next()) {
             String title = rs.getString(1);
             String authorID = rs.getString(2);
@@ -109,38 +111,43 @@ public class DBConnection {
                 }
             }
         }
+        statement.close();
     }
 
     /**
      * Method add new book allows the user to enter information to add book to database.
      */
     public void addNewBook(String ISBN, String copyright, String title, int editionNumber) throws Exception{
-        this.statement = this.connection.createStatement();
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
         String query = "INSERT into " + TITLES_TABLE + " VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, ISBN);
         preparedStatement.setString(2, title);
         preparedStatement.setInt(3, editionNumber);
         preparedStatement.setString(4, copyright);
-        preparedStatement.execute();
+        preparedStatement.executeUpdate();
         loadBooks();
         loadDatabase();
         System.out.println("Book added to database.");
+        statement.close();
 
     }
     /**
      * Method add new author allows user to enter author information and add to database
      */
     public void addNewAuthor(String firstName, String lastName, String title) throws Exception{
-        this.statement = this.connection.createStatement();
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
         String query = "INSERT into " + AUTHOR_TABLE +  " VALUES (DEFAULT, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, firstName);
         preparedStatement.setString(2, lastName);
-        preparedStatement.execute();
+        preparedStatement.executeUpdate();
         loadAuthors();
         loadDatabase();
         System.out.println("Author added to database.");
+        statement.close();
     }
 
     public HashMap<String, String> getMap() {

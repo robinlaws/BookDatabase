@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,6 @@ public class LibraryData extends HttpServlet {
         response.setContentType("text/html");
 
         try {
-            dbConnection.prepareConnection();
             dbConnection.loadBooks();
             dbConnection.loadAuthors();
             dbConnection.loadDatabase();
@@ -42,26 +42,31 @@ public class LibraryData extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-        try {
-            dbConnection.prepareConnection();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String formType = req.getParameter("formType");
+        if (formType.equals("addBook")) {
+            String author = req.getParameter("author");
+            String book = req.getParameter("book");
+            String isbn = req.getParameter("isbn");
+            int edition = parseInt(req.getParameter("edition"));
+            String copyright = req.getParameter("copyright");
+            try {
+                dbConnection.addNewBook(isbn, copyright, book, edition);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-        String title = req.getParameter("title");
-        String firstName = req.getParameter("firstname");
-        String lastName = req.getParameter("lastname");
-        String author = req.getParameter("author");
-        String book = req.getParameter("book");
-        String isbn = req.getParameter("isbn");
-        int edition = parseInt(req.getParameter("edition"));
-        String copyright = req.getParameter("copyright");
-        try {
-            dbConnection.addNewBook(isbn, copyright, book, edition);
-            dbConnection.addNewAuthor(firstName, lastName, title);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if (formType.equals("addAuthor")) {
+            String title = req.getParameter("title");
+            String firstName = req.getParameter("firstname");
+            String lastName = req.getParameter("lastname");
+            try {
+
+                dbConnection.addNewAuthor(firstName, lastName, title);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+        doGet(req, resp);
     }
 }
