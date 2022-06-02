@@ -20,9 +20,21 @@
     text-align: center;
     display: block;
     justify-content: center;
+    border: 1px solid black;
 }
 
 .list {
     justify-content: left;
 }
+
+.table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid purple;
+    text-align: center;
+    justify-content: center;
+}
+
+
 

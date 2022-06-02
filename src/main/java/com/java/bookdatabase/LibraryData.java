@@ -7,12 +7,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-
 import static java.lang.Integer.parseInt;
 
 @WebServlet(name = "library", urlPatterns = "/library", description = "Book Library Servlet")
@@ -38,7 +32,6 @@ public class LibraryData extends HttpServlet {
         request.setAttribute("bookList", dbConnection.getAllBooks());
         request.setAttribute("authorList", dbConnection.getAllAuthors());
         requestDispatcher.forward(request, response);
-
     }
 
     @Override
@@ -65,9 +58,9 @@ public class LibraryData extends HttpServlet {
             String firstName = req.getParameter("firstName");
             String lastName = req.getParameter("lastName");
             try {
+                dbConnection.addNewBook(isbn, "NA", title, 0);
                 dbConnection.addNewAuthor(firstName, lastName);
                 dbConnection.addAuthorISBN(isbn, firstName, lastName);
-                dbConnection.addNewBook(isbn, "NA", title, 0);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

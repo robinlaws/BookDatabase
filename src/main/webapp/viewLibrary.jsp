@@ -19,7 +19,7 @@
 
 <% List<Book> bookList = (List<Book>) request.getAttribute("bookList"); %>
 <% List<Author> authorList = (List<Author>) request.getAttribute("authorList"); %>
-
+<div class="table">
 <h2>LIBRARY BY BOOKS</h2>
 <table>
     <tr>
@@ -45,6 +45,7 @@
     </tr>
     <% } %>
 </table>
+</div>
 
 <h2>LIBRARY BY AUTHORS</h2>
 <table>
