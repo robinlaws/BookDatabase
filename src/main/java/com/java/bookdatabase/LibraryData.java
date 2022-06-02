@@ -7,12 +7,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import static java.lang.Integer.parseInt;
 
 @WebServlet(name = "library", urlPatterns = "/library", description = "Book Library Servlet")
 public class LibraryData extends HttpServlet {
     private String message;
     DBConnection dbConnection = new DBConnection();
+
     public void init() {
         message = "Library Servlet!";
     }
@@ -36,6 +39,7 @@ public class LibraryData extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
         String formType = req.getParameter("formType");
         if (formType.equals("addBook")) {
             String book = req.getParameter("book");
