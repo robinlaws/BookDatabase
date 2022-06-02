@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 
 import static java.lang.Integer.parseInt;
 
@@ -69,6 +69,7 @@ public class LibraryData extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
-        doGet(req, resp);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("submitted.jsp");
+        requestDispatcher.forward(req, resp);
     }
 }
