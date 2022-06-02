@@ -45,24 +45,29 @@ public class LibraryData extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String formType = req.getParameter("formType");
         if (formType.equals("addBook")) {
-            String author = req.getParameter("author");
             String book = req.getParameter("book");
             String isbn = req.getParameter("isbn");
             int edition = parseInt(req.getParameter("edition"));
             String copyright = req.getParameter("copyright");
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
             try {
                 dbConnection.addNewBook(isbn, copyright, book, edition);
+                dbConnection.addNewAuthor(firstName, lastName);
+                dbConnection.addAuthorISBN(isbn, firstName, lastName);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
         if (formType.equals("addAuthor")) {
             String title = req.getParameter("title");
-            String firstName = req.getParameter("firstname");
-            String lastName = req.getParameter("lastname");
+            String isbn = req.getParameter("isbn");
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
             try {
-
-                dbConnection.addNewAuthor(firstName, lastName, title);
+                dbConnection.addNewAuthor(firstName, lastName);
+                dbConnection.addAuthorISBN(isbn, firstName, lastName);
+                dbConnection.addNewBook(isbn, "NA", title, 0);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

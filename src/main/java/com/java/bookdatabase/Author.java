@@ -67,5 +67,5 @@ public class Author {
         return bookList;
     }
 
-    public String getFullName() { return firstName + ", " + lastName;}
+    public String getFullName() { return firstName + " " + lastName;}
 }

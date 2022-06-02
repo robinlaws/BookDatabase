@@ -14,11 +14,12 @@
 <jsp:include page="navbar.jsp" />
 <h1>ADD AN AUTHOR</h1>
 <form action = "library" method = "POST">
-    <label>Author First Name: <input type = "text" name = "firstname"> </label>
+    <label>Author First Name: <input type = "text" name = "firstName"> </label>
     <br />
-    <label>Author Last Name: <input type = "text" name = "lastname"> </label>
+    <label>Author Last Name: <input type = "text" name = "lastName"> </label>
     <br />
     <label>Book: <input type = "text" name = "title" /> </label>
+    <label>ISBN: <input type = "text" name = "isbn" /> </label>
     <input type="hidden" name="formType" value="addAuthor">
     <input type = "submit" value = "Submit" />
 </form>

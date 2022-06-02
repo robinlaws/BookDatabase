@@ -18,7 +18,8 @@
     <label>Book ISBN: <input type = "text" name = "isbn"></label>
     <label>Book Edition: <input type = "text" name = "edition"></label>
     <label>Book Copyright: <input type = "text" name = "copyright"></label>
-    <label>Author(s): <input type = "text" name = "author" /></label>
+    <label>Author First Name: <input type = "text" name = "firstName" /></label>
+    <label>Author Last Name: <input type = "text" name = "lastName" /></label>
     <input type="hidden" name="formType" value="addBook">
     <br />
     <input type = "submit" value = "Submit" />

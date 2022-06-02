@@ -5,6 +5,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 public class DBConnection {
     private final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private final String DB_URL = "jdbc:mysql://localhost:3306/books";
@@ -136,7 +138,7 @@ public class DBConnection {
     /**
      * Method add new author allows user to enter author information and add to database
      */
-    public void addNewAuthor(String firstName, String lastName, String title) throws Exception{
+    public void addNewAuthor(String firstName, String lastName) throws Exception{
         Connection connection = prepareConnection();
         Statement statement = connection.createStatement();
         String query = "INSERT into " + AUTHOR_TABLE +  " VALUES (DEFAULT, ?, ?)";
@@ -147,6 +149,25 @@ public class DBConnection {
         loadAuthors();
         loadDatabase();
         System.out.println("Author added to database.");
+        statement.close();
+    }
+
+    public void addAuthorISBN(String isbn, String firstName, String lastName) throws Exception {
+        Connection connection = prepareConnection();
+        Statement statement = connection.createStatement();
+        String query = "SELECT authorID from authors WHERE firstName= '" + firstName + "' and lastName='" + lastName + "'";
+        ResultSet rs = statement.executeQuery(query);
+        while (rs.next()) {
+            int authorID = rs.getInt(1);
+            String query1 = "INSERT into " + AUTHOR_ISBN_TABLE + " VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(query1);
+            preparedStatement.setInt(1, authorID);
+            preparedStatement.setString(2, isbn);
+            preparedStatement.executeUpdate();
+            loadAuthors();
+            loadDatabase();
+
+        }
         statement.close();
     }
 
