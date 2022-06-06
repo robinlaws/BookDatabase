@@ -1,5 +1,4 @@
 package com.java.bookdatabase;
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,10 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
-
-
 import static java.lang.Integer.parseInt;
 
+/**
+ * Webservlet class LibraryData provide book and author data depending on view requested.
+ */
 @WebServlet(name = "library", urlPatterns = "/library", description = "Book Library Servlet")
 public class LibraryData extends HttpServlet {
     private String message;
@@ -21,6 +21,13 @@ public class LibraryData extends HttpServlet {
         message = "Library Servlet!";
     }
 
+    /**
+     * doGet Servlet method will display author or book data depending on view requested
+     * @param request request
+     * @param response response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
@@ -33,19 +40,24 @@ public class LibraryData extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        request.setAttribute("bookList", dbConnection.getAllBooks());
+        request.setAttribute("authorList", dbConnection.getAllAuthors());
         if (Objects.equals(view, "books")) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewBOOKS.jsp");
-            request.setAttribute("bookList", dbConnection.getAllBooks());
-            request.setAttribute("authorList", dbConnection.getAllAuthors());
             requestDispatcher.forward(request, response);
         } if (Objects.equals(view, "author")){
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAUTHORS.jsp");
-            request.setAttribute("bookList", dbConnection.getAllBooks());
-            request.setAttribute("authorList", dbConnection.getAllAuthors());
             requestDispatcher.forward(request, response);
         }
     }
 
+    /**
+     * doPost Servlet method will process form data and add to library
+     * @param req request
+     * @param resp response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");

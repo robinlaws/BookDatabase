@@ -1,6 +1,4 @@
 package com.java.bookdatabase;
-
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -21,7 +19,6 @@ public class DBConnection {
     public final static String AUTHOR_ID = "authorID";
     public final static String AUTHOR_ISBN_TABLE = "authorISBN";
     public final static String ISBN = "ISBN";
-
 
     /**
      * Method prepare connection connects to database using pre-initialized values
@@ -51,6 +48,7 @@ public class DBConnection {
         }
         statement.close();
     }
+
     /**
      * Method load authors loads all authors from database and creates author objects
      *
@@ -68,6 +66,7 @@ public class DBConnection {
         }
         statement.close();
     }
+
     /**
      * Method load database queries database tables using primary key relationships.
      * Books and authors are added to hash map with key: Book value: Authors
@@ -133,8 +132,8 @@ public class DBConnection {
         loadDatabase();
         System.out.println("Book added to database.");
         statement.close();
-
     }
+
     /**
      * Method add new author allows user to enter author information and add to database
      */
@@ -152,6 +151,13 @@ public class DBConnection {
         statement.close();
     }
 
+    /**
+     * Method to add Author ISBN for database relational purposes
+     * @param isbn book isbn
+     * @param firstName author first name
+     * @param lastName author last name
+     * @throws Exception
+     */
     public void addAuthorISBN(String isbn, String firstName, String lastName) throws Exception {
         Connection connection = prepareConnection();
         Statement statement = connection.createStatement();
@@ -166,19 +172,22 @@ public class DBConnection {
             preparedStatement.executeUpdate();
             loadAuthors();
             loadDatabase();
-
         }
         statement.close();
     }
 
-    public HashMap<String, String> getMap() {
-        return map;
-    }
-
+    /**
+     * Method returns all authors
+     * @return list of all authors
+     */
     public List<Author> getAllAuthors() {
         return allAuthors;
     }
 
+    /**
+     * Method returns all books
+     * @return list of all books
+     */
     public List<Book> getAllBooks() {
         return allBooks;
     }

@@ -15,7 +15,6 @@
 <body>
 <jsp:include page="navbar.jsp" />
 
-<% List<Book> bookList = (List<Book>) request.getAttribute("bookList"); %>
 <% List<Author> authorList = (List<Author>) request.getAttribute("authorList"); %>
 
 <div class="table">
