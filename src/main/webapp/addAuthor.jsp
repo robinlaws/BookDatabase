@@ -22,7 +22,7 @@
     <label>Book: <input type = "text" name = "title" required /> </label>
     <label>ISBN: <input type = "text" name = "isbn" required/> </label>
     <input type="hidden" name="formType" value="addAuthor">
-    <input  type = "submit" value = "Submit" onsubmit='alert("Author submitted to database!")'/>
+    <input  type = "submit" value = "Submit"/>
 </form>
 </div>
 </body>

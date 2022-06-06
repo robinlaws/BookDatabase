@@ -12,7 +12,8 @@
   <body>
   <div class="top-nav">
     <a href="index.jsp", value="/add-book">Home</a>
-    <a href="library", value="/library">Book Library</a>
+    <a href="library?view=books", value="/library">Book Library</a>
+    <a href="library?view=author", value="/library">Author Library</a>
     <a href="addAuthor.jsp", value="/add-author">Add an Author</a>
     <a href="addBook.jsp", value="/add-book">Add a Book</a>
   </div>

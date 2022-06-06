@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 
 import static java.lang.Integer.parseInt;
@@ -23,6 +24,7 @@ public class LibraryData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+        String view = request.getParameter("view");
 
         try {
             dbConnection.loadBooks();
@@ -31,10 +33,17 @@ public class LibraryData extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewLibrary.jsp");
-        request.setAttribute("bookList", dbConnection.getAllBooks());
-        request.setAttribute("authorList", dbConnection.getAllAuthors());
-        requestDispatcher.forward(request, response);
+        if (Objects.equals(view, "books")) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewBOOKS.jsp");
+            request.setAttribute("bookList", dbConnection.getAllBooks());
+            request.setAttribute("authorList", dbConnection.getAllAuthors());
+            requestDispatcher.forward(request, response);
+        } if (Objects.equals(view, "author")){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("viewAUTHORS.jsp");
+            request.setAttribute("bookList", dbConnection.getAllBooks());
+            request.setAttribute("authorList", dbConnection.getAllAuthors());
+            requestDispatcher.forward(request, response);
+        }
     }
 
     @Override

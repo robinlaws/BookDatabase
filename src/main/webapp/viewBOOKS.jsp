@@ -45,29 +45,7 @@
     <% } %>
 </table>
 </div>
-    <div class="table">
-<h2>LIBRARY BY AUTHORS</h2>
-<table>
-    <tr>
-        <th>Author ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Books</th>
-        <th/><th/><th/><th/><th/><th/><th/><th/><th/><th/><th/>
-    </tr>
 
-    <% for (Author author : authorList) { %>
-    <tr>
-        <td><%=author.getAuthorID()%></td>
-        <td><%=author.getFirstName()%></td>
-        <td><%=author.getLastName()%></td>
-        <% for (Book book : author.getBookList()) { %>
-            <td><%=book.getTitle()%></td>
-        <% } %>
-    </tr>
-    <% } %>
-</table>
-</div>
 </body>
 </html>
 

@@ -17,13 +17,13 @@
 <form action = "library" method = "POST">
     <label>Book Title:<input type = "text" name = "book" required> </label>
     <label>Book ISBN: <input type = "text" name = "isbn" required ></label>
-    <label>Book Edition: <input type = "text" name = "edition" pattern="[0-9]" required></label>
+    <label>Book Edition: <input type = "text" name = "edition" pattern="[0-100]" required></label>
     <label>Book Copyright: <input type = "text" name = "copyright" maxlength="4" required></label>
     <label>Author First Name: <input type = "text" name = "firstName" required/></label>
     <label>Author Last Name: <input type = "text" name = "lastName" required/></label>
     <input type="hidden" name="formType" value="addBook">
     <br />
-    <input type = "submit" value = "Submit" onsubmit="alert('Book successfully added to database!')"/>
+    <input type = "submit" value = "Submit"/>
 </form>
 </div>
 </body>
